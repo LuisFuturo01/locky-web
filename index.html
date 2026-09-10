@@ -3,203 +3,1396 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Descargar Locky - Bóveda de Contraseñas Segura</title>
+  <title>Locky — Bóveda Privada de Credenciales y Seguridad AES-256</title>
+  <meta name="description" content="Descarga Locky v1.0.0 para Android. La bóveda de contraseñas offline-first con cifrado de cero conocimiento, patrones de seguridad 3x3 a 6x6 y sincronización en la nube." />
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg-dark: #070d19;
+      --bg-card: rgba(15, 25, 48, 0.75);
+      --bg-card-hover: rgba(23, 37, 71, 0.85);
+      --border-color: rgba(30, 58, 95, 0.6);
+      --border-glow: rgba(0, 210, 255, 0.4);
+      --primary: #00d2ff;
+      --primary-gradient: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background-color: #0b1329;
-      color: #f1f5f9;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    h1, h2, h3, h4, h5, h6, .brand-title {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Container Utility */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 13, 25, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar .container {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #102142 0%, #0a1428 100%);
+      border: 1.5px solid var(--primary);
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+      overflow: hidden;
     }
 
-    .card {
-      max-width: 480px;
+    .brand-icon img {
       width: 100%;
-      background: linear-gradient(180deg, #111e38 0%, #0d172c 100%);
-      border: 1px solid #1e3a5f;
-      border-radius: 24px;
-      padding: 40px 24px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      object-fit: cover;
     }
 
-    /* Icono Locky */
-    .icon-container {
-      display: inline-block;
-      background: linear-gradient(135deg, #162a4d 0%, #0e1d38 100%);
-      border: 2px solid #00c2ff;
-      border-radius: 22px;
-      padding: 18px;
-      box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+    .brand-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-name span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-gradient);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.45);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 100px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      color: #ffffff;
       margin-bottom: 20px;
     }
 
-    .icon-container svg {
-      display: block;
-      width: 52px;
-      height: 52px;
+    .hero-title span {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #ffffff;
-      margin-bottom: 6px;
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 580px;
     }
 
-    .tagline {
-      font-size: 15px;
-      color: #00d2ff;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .description {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #94a3b8;
-      margin-bottom: 24px;
-    }
-
-    /* Datos de la versión */
-    .badge-container {
+    .hero-actions {
       display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 28px;
+      background: var(--primary-gradient);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4);
+      transition: all 0.25s ease;
     }
 
-    .badge {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid #1e293b;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #cbd5e1;
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 210, 255, 0.55);
     }
 
-    /* Botón de Descarga */
-    .download-btn {
-      display: flex;
+    .btn-secondary {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      background: linear-gradient(90deg, #00d2ff 0%, #0072ff 100%);
-      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
       text-decoration: none;
       font-size: 16px;
-      font-weight: 700;
-      padding: 16px 24px;
-      border-radius: 14px;
-      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      font-weight: 600;
+      padding: 16px 28px;
+      border-radius: 16px;
+      transition: all 0.2s ease;
     }
 
-    .download-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.45);
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
     }
 
-    .download-btn:active {
-      transform: translateY(0);
-    }
-
-    /* Instrucciones para Android */
-    .instructions {
-      margin-top: 32px;
-      border-top: 1px solid #1e293b;
+    .hero-specs {
+      display: flex;
+      align-items: center;
+      gap: 24px;
       padding-top: 24px;
-      text-align: left;
+      border-top: 1px solid var(--border-color);
     }
 
-    .instructions h3 {
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Hero Mockup Frame */
+    .mockup-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mockup-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(0, 210, 255, 0.25) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 70%);
+      filter: blur(40px);
+      z-index: 1;
+    }
+
+    .phone-mockup {
+      position: relative;
+      z-index: 2;
+      width: 290px;
+      background: #091224;
+      border: 4px solid #1a2f50;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 210, 255, 0.2);
+    }
+
+    .phone-screen {
+      width: 100%;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #0b172a;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .floating-pill {
+      position: absolute;
+      z-index: 3;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      padding: 12px 18px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .floating-pill.pill-1 {
+      top: 12%;
+      left: -30px;
+    }
+
+    .floating-pill.pill-2 {
+      bottom: 18%;
+      right: -20px;
+      animation-delay: -2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .pill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .pill-1 .pill-icon { background: rgba(0, 210, 255, 0.15); color: var(--primary); }
+    .pill-2 .pill-icon { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+
+    .pill-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pill-title { font-size: 13px; font-weight: 700; color: #ffffff; }
+    .pill-sub { font-size: 11px; color: var(--text-dim); }
+
+    /* Stats Bar */
+    .stats-bar {
+      padding: 40px 0;
+      background: rgba(11, 20, 38, 0.6);
+      border-y: 1px solid var(--border-color);
+      margin-bottom: 100px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 36px;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .stat-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Section Titles */
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px;
+    }
+
+    .section-tag {
       font-size: 13px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #64748b;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 120px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 36px 28px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary-gradient);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-6px);
+      border-color: rgba(0, 210, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
       margin-bottom: 12px;
     }
 
-    .instructions ol {
-      padding-left: 18px;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #94a3b8;
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .footer {
-      margin-top: 24px;
+    /* Interactive Playground Section */
+    .playground-section {
+      margin-bottom: 120px;
+      background: linear-gradient(180deg, rgba(13, 23, 44, 0.8) 0%, rgba(7, 13, 25, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 32px;
+      padding: 60px 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .demo-box {
+      background: rgba(9, 16, 32, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .demo-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .demo-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Pattern Matrix Playground */
+    .grid-size-selector {
+      display: flex;
+      gap: 6px;
+    }
+
+    .grid-size-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 8px;
       font-size: 12px;
-      color: #475569;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .grid-size-btn.active, .grid-size-btn:hover {
+      background: var(--primary);
+      color: #000;
+      border-color: var(--primary);
+    }
+
+    .pattern-canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 280px;
+      aspect-ratio: 1;
+      margin: 0 auto 20px;
+      background: rgba(15, 25, 48, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .pattern-grid {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      gap: 12px;
+    }
+
+    .pattern-dot {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .pattern-dot.selected {
+      background: var(--primary-gradient);
+      border-color: #ffffff;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+      transform: scale(1.1);
+    }
+
+    .pattern-status {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      min-height: 20px;
+    }
+
+    .pattern-reset-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pattern-reset-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    /* Password Generator Playground */
+    .pass-display {
+      background: rgba(15, 25, 48, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .pass-text {
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      background: rgba(0, 210, 255, 0.15);
+      border: none;
+      color: var(--primary);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      background: var(--primary);
+      color: #000;
+    }
+
+    .slider-group {
+      margin-bottom: 20px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .gen-btn {
+      background: var(--primary-gradient);
+      border: none;
+      color: #ffffff;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .gen-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.35);
+    }
+
+    /* Installation Guide Cards */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 120px;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .step-card h3 {
+      font-size: 18px;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto 120px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 20px;
+      color: var(--primary);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+      content: '−';
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 20px;
+    }
+
+    /* Download Banner Callout */
+    .download-banner {
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      border-radius: 32px;
+      padding: 60px;
+      text-align: center;
+      margin-bottom: 80px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .download-banner h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .download-banner p {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 50px 0 30px;
+      background: rgba(5, 10, 20, 0.95);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 992px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+      .hero-subtitle { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .hero-specs { justify-content: center; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .playground-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-title { font-size: 38px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .download-banner { padding: 40px 24px; }
+      .download-banner h2 { font-size: 28px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    
-    <!-- Logo / Icono -->
-    <div class="icon-container">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        <circle cx="12" cy="16" r="1.5" fill="#00d2ff"></circle>
-      </svg>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <img src="./assets/icon.png" alt="Locky Icon" onError="this.style.display='none'">
+        </div>
+        <div class="brand-name">Locky<span>.</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#caracteristicas">Características</a></li>
+        <li><a href="#demostración">Demostración</a></li>
+        <li><a href="#seguridad">Seguridad</a></li>
+        <li><a href="#instalacion">Instalación</a></li>
+        <li><a href="#faq">Preguntas Frecuentes</a></li>
+      </ul>
+      <a href="./app-release.apk" download class="nav-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Descargar APK
+      </a>
     </div>
+  </nav>
 
-    <h1>Locky</h1>
-    <div class="tagline">Tu bóveda segura de credenciales</div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge-pill">
+            <span class="badge-dot"></span>
+            Locky v1.0.0 — Bóveda de Credenciales de Última Generación
+          </div>
+          <h1 class="hero-title">Tu Bóveda Privada. <span>Cifrado Absoluto.</span> Cero Conocimiento.</h1>
+          <p class="hero-subtitle">
+            Guarda y administra tus contraseñas, notas confidenciales, tarjetas y <strong>patrones de seguridad visuales (3x3 a 6x6)</strong> con cifrado AES-256 local y sincronización inteligente en la nube.
+          </p>
+          <div class="hero-actions">
+            <a href="./app-release.apk" download class="btn-primary">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Descargar APK Gratuito
+            </a>
+            <a href="#demostración" class="btn-secondary">Probar Simulador</a>
+          </div>
 
-    <p class="description">
-      Guarda, gestiona y protege todas tus contraseñas con cifrado de extremo a extremo y autenticación segura.
-    </p>
+          <div class="hero-specs">
+            <div class="spec-item">
+              <span class="spec-value">Android 8.0+</span>
+              <span class="spec-label">Requisito Mínimo</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-value">~18 MB</span>
+              <span class="spec-label">Tamaño Descarga</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-value">AES-256</span>
+              <span class="spec-label">Cifrado Militar</span>
+            </div>
+          </div>
+        </div>
 
-    <!-- Metadatos de la App -->
-    <div class="badge-container">
-      <span class="badge">v1.0.0</span>
-      <span class="badge">Android 8.0+</span>
-      <span class="badge">~18 MB</span>
+        <div class="mockup-wrapper">
+          <div class="mockup-glow"></div>
+          
+          <div class="floating-pill pill-1">
+            <div class="pill-icon">🧩</div>
+            <div class="pill-text">
+              <span class="pill-title">Patrones 3x3 - 6x6</span>
+              <span class="pill-sub">Secuencia Numerada 1 → 2 → 3</span>
+            </div>
+          </div>
+
+          <div class="floating-pill pill-2">
+            <div class="pill-icon">⚡</div>
+            <div class="pill-text">
+              <span class="pill-title">100% Offline-First</span>
+              <span class="pill-sub">Base de Datos SQLite Local</span>
+            </div>
+          </div>
+
+          <div class="phone-mockup">
+            <div class="phone-screen">
+              <img src="./assets/preview.png" alt="Locky App Screen Preview" onError="this.src='./assets/icon.png'">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Botón Principal: apunta al archivo APK -->
-    <a href="./app-release.apk" download class="download-btn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="7 10 12 15 17 10"></polyline>
-        <line x1="12" y1="15" x2="12" y2="3"></line>
-      </svg>
-      Descargar APK
-    </a>
-
-    <!-- Guía de instalación para el usuario -->
-    <div class="instructions">
-      <h3>¿Cómo instalar en Android?</h3>
-      <ol>
-        <li>Toca en <strong>Descargar APK</strong>.</li>
-        <li>Si el navegador muestra una advertencia de archivo no reconocido, selecciona <strong>"Descargar de todos modos"</strong>.</li>
-        <li>Abre el archivo descargado y concede el permiso para <strong>"Instalar aplicaciones desconocidas"</strong> si el sistema lo solicita.</li>
-        <li>¡Abre Locky y accede a tu bóveda!</li>
-      </ol>
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>256 bits</h3>
+          <p>Cifrado AES Local</p>
+        </div>
+        <div class="stat-card">
+          <h3>100%</h3>
+          <p>Operatividad Offline</p>
+        </div>
+        <div class="stat-card">
+          <h3>3x3 - 6x6</h3>
+          <p>Matriz de Patrones</p>
+        </div>
+        <div class="stat-card">
+          <h3>0 bytes</h3>
+          <p>Datos en Claro en Servidor</p>
+        </div>
+      </div>
     </div>
+  </section>
 
+  <!-- Features Grid Section -->
+  <section id="caracteristicas" style="padding: 40px 0;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Infraestructura de Seguridad</span>
+        <h2 class="section-title">Diseñado para la Privacidad Extrema</h2>
+        <p class="section-desc">Locky combina la velocidad de una base de datos local con la tranquilidad de copias de seguridad cifradas en la nube.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h3>Cifrado Cero Conocimiento</h3>
+          <p>Tus contraseñas y datos se cifran en tu dispositivo antes de salir. Nadie, ni siquiera los servidores de Locky, puede leer tu bóveda.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 8v4l3 3"></path>
+            </svg>
+          </div>
+          <h3>Credenciales de Patrón (3x3 a 6x6)</h3>
+          <p>Guarda secuencias visuales de desbloqueo con trazado de puntos numerado (1 → 2 → 3...). Ideal para contraseñas de desbloqueo gráfico.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3>Carpetas Jerárquicas</h3>
+          <p>Organiza tu bóveda en carpetas y subcarpetas con íconos personalizados y código de colores para un acceso instantáneo.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <h3>Biometría & Bloqueo Local</h3>
+          <p>Accede con tu huella dactilar, reconocimiento facial o el PIN de tu dispositivo sin necesidad de escribir contraseñas largas.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </div>
+          <h3>Sincronización Inteligente</h3>
+          <p>Trabaja offline sin depender de señal. Al conectarte a Internet, Locky concilia y sincroniza automáticamente los cambios con Supabase.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+          </div>
+          <h3>Vinculación de Cuentas</h3>
+          <p>Relaciona contraseñas con correos de recuperación o cuentas secundarias para vincular elementos de tu bóveda entre sí.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Playground Section -->
+  <section id="demostración">
+    <div class="container">
+      <div class="playground-section">
+        <div class="section-header" style="margin-bottom: 40px;">
+          <span class="section-tag">Demostración Interactiva</span>
+          <h2 class="section-title">Prueba las Funciones de Locky</h2>
+          <p class="section-desc">Experimenta directamente en la web el creador de patrones numerados y el generador de contraseñas seguras.</p>
+        </div>
+
+        <div class="playground-grid">
+          <!-- Pattern Simulator -->
+          <div class="demo-box">
+            <div class="demo-box-header">
+              <div class="demo-title">
+                <span>🧩 Simulador de Patrón Visual</span>
+              </div>
+              <div class="grid-size-selector">
+                <button class="grid-size-btn active" onclick="setGridSize(3)">3x3</button>
+                <button class="grid-size-btn" onclick="setGridSize(4)">4x4</button>
+                <button class="grid-size-btn" onclick="setGridSize(5)">5x5</button>
+                <button class="grid-size-btn" onclick="setGridSize(6)">6x6</button>
+              </div>
+            </div>
+
+            <div class="pattern-canvas-container">
+              <div class="pattern-grid" id="patternGrid"></div>
+            </div>
+
+            <div class="pattern-status" id="patternStatus">Toca los puntos para trazar una secuencia</div>
+            <button class="pattern-reset-btn" onclick="resetPattern()">Limpiar Patrón</button>
+          </div>
+
+          <!-- Password Generator -->
+          <div class="demo-box">
+            <div class="demo-box-header">
+              <div class="demo-title">
+                <span>🔑 Generador de Contraseñas</span>
+              </div>
+            </div>
+
+            <div class="pass-display">
+              <span class="pass-text" id="passOutput">xK9#mP2$vL5!wQ</span>
+              <button class="copy-btn" onclick="copyPassword()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span id="copyText">Copiar</span>
+              </button>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span>Longitud de Contraseña</span>
+                <span id="lengthVal" style="font-weight: 700; color: var(--primary);">16</span>
+              </div>
+              <input type="range" id="lengthSlider" min="8" max="32" value="16" oninput="updatePassLength(this.value)">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; font-size: 13px; color: var(--text-muted);">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="chkSymbols" checked onchange="generatePass()" style="accent-color: var(--primary);"> Símbolos (@#$%)
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="chkNumbers" checked onchange="generatePass()" style="accent-color: var(--primary);"> Números (0-9)
+              </label>
+            </div>
+
+            <button class="gen-btn" onclick="generatePass()">Generar Nueva Contraseña Segura</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Guide Section -->
+  <section id="instalacion">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Guía de Instalación Rápida</span>
+        <h2 class="section-title">Instálalo en tu Android en 3 Pasos</h2>
+        <p class="section-desc">Instala el paquete APK directo sin depender de tiendas externas de aplicaciones.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Descarga el APK</h3>
+          <p>Haz clic en el botón <strong>Descargar APK</strong> para obtener la última versión <code>app-release.apk</code> oficial.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Autoriza la Instalación</h3>
+          <p>Si Android te solicita permisos, activa <strong>"Permitir la instalación de fuentes desconocidas"</strong> en tu navegador.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Protege tu Bóveda</h3>
+          <p>Abre Locky, crea o ingresa con tu cuenta y configura tu método de desbloqueo biométrico o por PIN.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Preguntas Frecuentes</span>
+        <h2 class="section-title">Resuelve tus Dudas sobre Locky</h2>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">¿Mis contraseñas se almacenan sin cifrar en los servidores?</div>
+          <div class="faq-answer">No. Locky aplica cifrado de cero conocimiento local con AES-256. Todos tus títulos, notas, datos y patrones se cifran en tu celular antes de ser transmitidos a Supabase. Nadie excepto tú puede descifrarlos.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">¿Puedo usar la aplicación sin conexión a Internet?</div>
+          <div class="faq-answer">Sí. Locky funciona 100% offline utilizando una base de datos local SQLite. Puedes consultar, crear o editar credenciales sin señal, y se sincronizarán en cuanto te conectes a Internet.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">¿Cómo funciona la credencial de Patrón?</div>
+          <div class="faq-answer">Te permite guardar combinaciones visuales de patrones de desbloqueo desde matrices de 3x3 hasta 6x6. Al guardarla, Locky registra la secuencia numerada (1 → 2 → 3...) para que nunca olvides el orden exacto de trazado.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">¿Qué ocurre si borro la base de datos en el servidor?</div>
+          <div class="faq-answer">Al sincronizar estando conectado, Locky concilia los datos: si un elemento ya no existe en el servidor, se actualizará en la caché de tu celular para mantener la coherencia. Si estás offline, mantendrá tu copia local protegida.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Callout Download Banner -->
+  <div class="container">
+    <div class="download-banner">
+      <h2>Empieza a Proteger tus Credenciales Hoy</h2>
+      <p>Descarga la versión oficial de Locky para Android y toma el control total de tu privacidad digital.</p>
+      <a href="./app-release.apk" download class="btn-primary" style="margin: 0 auto; display: inline-flex;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Descargar APK (v1.0.0)
+      </a>
+    </div>
   </div>
 
-  <div class="footer">
-    © 2026 Locky Security. Todos los derechos reservados. <br>
-    Desarrollado por Luis Alejandro Zeballos Quiroz - luis.zeballos.quiroz@gmail.com
-  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span>Locky Security</span>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#caracteristicas">Características</a></li>
+          <li><a href="#demostración">Simulador</a></li>
+          <li><a href="#instalacion">Instalación</a></li>
+          <li><a href="./app-release.apk" download>Descargar APK</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Locky — Bóveda Privada de Credenciales. Todos los derechos reservados.<br>
+        Desarrollado por <strong>Luis Alejandro Zeballos Quiroz</strong> &bull; luis.zeballos.quiroz@gmail.com
+      </div>
+    </div>
+  </footer>
 
+  <!-- Interactive JavaScript Playground Logic -->
+  <script>
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+
+    // Interactive Pattern Matrix Simulator
+    let currentGridSize = 3;
+    let selectedSequence = [];
+
+    function setGridSize(size) {
+      currentGridSize = size;
+      document.querySelectorAll('.grid-size-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === `${size}x${size}`);
+      });
+      resetPattern();
+    }
+
+    function renderPatternGrid() {
+      const grid = document.getElementById('patternGrid');
+      grid.style.gridTemplateColumns = `repeat(${currentGridSize}, 1fr)`;
+      grid.style.gridTemplateRows = `repeat(${currentGridSize}, 1fr)`;
+      grid.innerHTML = '';
+
+      const totalDots = currentGridSize * currentGridSize;
+      for (let i = 1; i <= totalDots; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'pattern-dot';
+        dot.dataset.index = i;
+        dot.addEventListener('click', () => handleDotClick(i, dot));
+        grid.appendChild(dot);
+      }
+    }
+
+    function handleDotClick(index, dotElem) {
+      if (selectedSequence.includes(index)) return;
+
+      selectedSequence.push(index);
+      dotElem.classList.add('selected');
+      dotElem.textContent = selectedSequence.length;
+
+      const status = document.getElementById('patternStatus');
+      status.innerHTML = `Secuencia (${currentGridSize}x${currentGridSize}): <strong>${selectedSequence.join(' → ')}</strong>`;
+    }
+
+    function resetPattern() {
+      selectedSequence = [];
+      document.getElementById('patternStatus').textContent = 'Toca los puntos para trazar una secuencia';
+      renderPatternGrid();
+    }
+
+    // Password Generator Simulator
+    function generatePass() {
+      const length = parseInt(document.getElementById('lengthSlider').value);
+      const useSymbols = document.getElementById('chkSymbols').checked;
+      const useNumbers = document.getElementById('chkNumbers').checked;
+
+      let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      if (useNumbers) charset += "0123456789";
+      if (useSymbols) charset += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+      let res = "";
+      for (let i = 0; i < length; i++) {
+        res += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      document.getElementById('passOutput').textContent = res;
+    }
+
+    function updatePassLength(val) {
+      document.getElementById('lengthVal').textContent = val;
+      generatePass();
+    }
+
+    function copyPassword() {
+      const text = document.getElementById('passOutput').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyText = document.getElementById('copyText');
+        copyText.textContent = "¡Copiado!";
+        setTimeout(() => copyText.textContent = "Copiar", 2000);
+      });
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPatternGrid();
+      generatePass();
+    });
+  </script>
 </body>
 </html>
