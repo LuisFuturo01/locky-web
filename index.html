@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Locky — Bóveda Privada de Credenciales y Seguridad AES-256</title>
-  <meta name="description" content="Descarga Locky v1.0.0 para Android. La bóveda de contraseñas offline-first con cifrado de cero conocimiento, patrones de seguridad 3x3 a 6x6 y sincronización en la nube." />
+  <meta id="metaDesc" name="description" content="Descarga Locky v1.0.0 para Android. La bóveda de contraseñas offline-first con cifrado de cero conocimiento, patrones de seguridad 3x3 a 6x6 y sincronización en la nube." />
 
   <!-- Google Fonts: Outfit & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -809,6 +809,105 @@
       .mobile-pills-row { flex-direction: column; gap: 8px; width: 100%; }
       .floating-pill { width: 100%; }
     }
+
+    /* Version History Section */
+    .version-history-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 850px;
+      margin: 0 auto 80px;
+    }
+
+    .version-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .version-card.latest-version {
+      border-color: rgba(0, 210, 255, 0.5);
+      background: linear-gradient(135deg, rgba(15, 25, 48, 0.95) 0%, rgba(20, 36, 68, 0.85) 100%);
+      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.12);
+    }
+
+    .version-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .version-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .version-tag-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .version-badge-latest {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .version-date {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .version-details-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .version-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .version-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .version-download-btn:hover {
+      background: var(--primary);
+      color: #000000;
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -826,9 +925,10 @@
         <li><a href="#caracteristicas">Características</a></li>
         <li><a href="#demostración">Demostración</a></li>
         <li><a href="#instalacion">Instalación</a></li>
+        <li><a href="#versiones">Versiones</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
-      <a href="./locky.apk" download class="nav-btn">
+      <a href="./downloads/locky.apk" download class="nav-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
@@ -846,14 +946,14 @@
         <div class="hero-content">
           <div class="badge-pill">
             <span class="badge-dot"></span>
-            Locky v1.0.0 — Bóveda Privada
+            <span id="versionBadge">Locky v1.0.0 — Bóveda Privada</span>
           </div>
           <h1 class="hero-title">Tu Bóveda Privada. <span>Cifrado Absoluto.</span></h1>
           <p class="hero-subtitle">
             Guarda contraseñas, notas, tarjetas y <strong>patrones de seguridad (3x3 a 6x6)</strong> con cifrado AES-256 local y sincronización en la nube.
           </p>
           <div class="hero-actions">
-            <a href="./locky.apk" download class="btn-primary">
+            <a href="./downloads/locky.apk" download class="btn-primary">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -866,11 +966,11 @@
 
           <div class="hero-specs">
             <div class="spec-item">
-              <span class="spec-value">Android 8.0+</span>
+              <span class="spec-value" id="specAndroid">Android 8.0+</span>
               <span class="spec-label">Mínimo Requerido</span>
             </div>
             <div class="spec-item">
-              <span class="spec-value">~18 MB</span>
+              <span class="spec-value" id="specSize">~18 MB</span>
               <span class="spec-label">Tamaño APK</span>
             </div>
             <div class="spec-item">
@@ -1087,7 +1187,7 @@
         <div class="step-card">
           <div class="step-num">1</div>
           <h3>Descarga el APK</h3>
-          <p>Haz clic en el botón de descarga para obtener <code>locky.apk</code>.</p>
+          <p>Haz clic en el botón de descarga para obtener <code id="step1FileName">locky.apk</code>.</p>
         </div>
 
         <div class="step-card">
@@ -1101,6 +1201,21 @@
           <h3>Protege tu Bóveda</h3>
           <p>Abre Locky, ingresa con tu cuenta y activa el bloqueo por biometría.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Version History Section -->
+  <section id="versiones">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Actualizaciones</span>
+        <h2 class="section-title">Historial de Versiones</h2>
+        <p class="section-desc">Descarga cualquier versión de Locky ordenada de la más reciente a la más antigua.</p>
+      </div>
+
+      <div class="version-history-grid" id="versionHistoryGrid">
+        <!-- Renderizado dinámicamente con JavaScript desde version.json -->
       </div>
     </div>
   </section>
@@ -1136,8 +1251,8 @@
   <div class="container">
     <div class="download-banner">
       <h2>Protege tus Credenciales Hoy</h2>
-      <p>Descarga Locky v1.0.0 oficial para Android.</p>
-      <a href="./locky.apk" download class="btn-primary">
+      <p id="bannerVersionDesc">Descarga Locky v1.0.0 oficial para Android.</p>
+      <a href="./downloads/locky.apk" download class="btn-primary">
         Descargar APK Gratuito
       </a>
     </div>
@@ -1151,7 +1266,8 @@
         <ul class="footer-links">
           <li><a href="#caracteristicas">Características</a></li>
           <li><a href="#demostración">Simulador</a></li>
-          <li><a href="./locky.apk" download>Descargar APK</a></li>
+          <li><a href="#versiones">Versiones</a></li>
+          <li><a href="./downloads/locky.apk" download id="footerDownloadLink">Descargar APK</a></li>
         </ul>
       </div>
       <div class="footer-bottom">
@@ -1242,7 +1358,131 @@
       });
     }
 
+    function compareVersions(v1, v2) {
+      const parts1 = String(v1 || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+      const parts2 = String(v2 || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+      const maxLen = Math.max(parts1.length, parts2.length);
+      for (let i = 0; i < maxLen; i++) {
+        const num1 = parts1[i] || 0;
+        const num2 = parts2[i] || 0;
+        if (num1 > num2) return -1;
+        if (num1 < num2) return 1;
+      }
+      return 0;
+    }
+
+    async function loadVersionInfo() {
+      try {
+        const res = await fetch('./version.json?t=' + Date.now());
+        if (!res.ok) return;
+        let data = await res.json();
+
+        let versionsList = [];
+        if (Array.isArray(data)) {
+          versionsList = data;
+        } else if (data && Array.isArray(data.versions)) {
+          versionsList = data.versions;
+        } else if (data && typeof data === 'object') {
+          versionsList = [data];
+        }
+
+        if (versionsList.length === 0) return;
+
+        // Ordenar descendentemente (última/más reciente primero)
+        versionsList.sort((a, b) => compareVersions(a.version, b.version));
+
+        // La última versión es la primera en la lista ordenada
+        const latest = versionsList[0];
+        const latestFolder = (latest.folder || '').trim().replace(/\/+$/, '');
+        const latestFilename = (latest.filename || 'locky.apk').trim();
+        const latestDownloadUrl = latestFolder ? `${latestFolder}/${latestFilename}` : `./${latestFilename}`;
+        const latestVerStr = latest.version ? `v${latest.version}` : 'v1.0.0';
+
+        // Actualizar botones de descarga principales (Navbar, Hero, Banner, Footer)
+        document.querySelectorAll('a.nav-btn, a.btn-primary, #footerDownloadLink').forEach(link => {
+          link.href = latestDownloadUrl;
+          link.setAttribute('download', latestFilename);
+        });
+
+        const versionBadge = document.getElementById('versionBadge');
+        if (versionBadge) {
+          versionBadge.textContent = `Locky ${latestVerStr} — Bóveda Privada`;
+        }
+
+        const specSize = document.getElementById('specSize');
+        if (specSize && latest.file_size) {
+          specSize.textContent = latest.file_size;
+        }
+
+        const specAndroid = document.getElementById('specAndroid');
+        if (specAndroid && latest.min_android) {
+          specAndroid.textContent = latest.min_android;
+        }
+
+        const step1FileName = document.getElementById('step1FileName');
+        if (step1FileName) {
+          step1FileName.textContent = latestFilename;
+        }
+
+        const bannerDesc = document.getElementById('bannerVersionDesc');
+        if (bannerDesc) {
+          bannerDesc.textContent = `Descarga Locky ${latestVerStr} oficial para Android.`;
+        }
+
+        const metaDesc = document.getElementById('metaDesc');
+        if (metaDesc) {
+          metaDesc.setAttribute('content', `Descarga Locky ${latestVerStr} para Android. La bóveda de contraseñas offline-first con cifrado de cero conocimiento y sincronización en la nube.`);
+        }
+
+        // Renderizar el historial completo de versiones en orden descendente
+        const historyGrid = document.getElementById('versionHistoryGrid');
+        if (historyGrid) {
+          historyGrid.innerHTML = '';
+          versionsList.forEach((item, index) => {
+            const isLatest = index === 0;
+            const itemFolder = (item.folder || '').trim().replace(/\/+$/, '');
+            const itemFilename = (item.filename || 'locky.apk').trim();
+            const itemDownloadUrl = itemFolder ? `${itemFolder}/${itemFilename}` : `./${itemFilename}`;
+            const itemVerStr = item.version ? `v${item.version}` : '';
+
+            const card = document.createElement('div');
+            card.className = `version-card ${isLatest ? 'latest-version' : ''}`;
+
+            card.innerHTML = `
+              <div class="version-card-header">
+                <div class="version-title-group">
+                  <span class="version-tag-number">Locky ${itemVerStr}</span>
+                  ${isLatest ? '<span class="version-badge-latest">Última Versión</span>' : ''}
+                </div>
+                <span class="version-date">${item.release_date || ''}</span>
+              </div>
+
+              <div class="version-details-pills">
+                ${item.file_size ? `<span class="version-pill">📦 ${item.file_size}</span>` : ''}
+                ${item.min_android ? `<span class="version-pill">🤖 ${item.min_android}</span>` : ''}
+                <span class="version-pill">📄 ${itemFilename}</span>
+              </div>
+
+              <a href="${itemDownloadUrl}" download="${itemFilename}" class="version-download-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Descargar Locky ${itemVerStr}
+              </a>
+            `;
+
+            historyGrid.appendChild(card);
+          });
+        }
+      } catch (err) {
+        console.warn('No se pudo cargar version.json dinámicamente:', err);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      loadVersionInfo();
       renderPatternGrid();
       generatePass();
     });

@@ -1,0 +1,18 @@
+[
+  {
+    "version": "1.0.1",
+    "folder": "downloads",
+    "filename": "locky-v1.0.1.apk",
+    "file_size": "~59.1 MB",
+    "min_android": "Android 8.0+",
+    "release_date": "2026-09-21"
+  },
+  {
+    "version": "1.0.0",
+    "folder": "downloads",
+    "filename": "locky.apk",
+    "file_size": "~58.9 MB",
+    "min_android": "Android 8.0+",
+    "release_date": "2026-09-10"
+  }
+]
